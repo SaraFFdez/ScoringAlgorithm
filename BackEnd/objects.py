@@ -4,31 +4,41 @@ class VolleyballMatch():
 
     winner = None
 
+    sets_played = [] #list of sets (this is for info keeping, but is it necessary?)
+
     total_tout = 0
     total_subs= 0
     total_time = 0
-    
+
     def __init__(self, max_sets: int, name_A:str, name_B:str):
         self.max_sets = max_sets
         self.name_A = name_A
         self.name_B = name_B
 
+    def checkWinner(self):
+        sets_needed = (self.max_sets//2 + 1)
+        if self.wins_A == sets_needed:
+            self.winner = "A"
+        elif self.wins_B == sets_needed:
+            self.winner = "B"
 
-    def updateSets(self, whoWon):
-        if whoWon == "A":
+    def updateSets(self, whoWon:str, set): #change to a try except
+        if whoWon.upper() == "A":
             self.wins_A += 1
-        elif whoWon == "B":
+            self.sets_played.append(set)
+            self.checkWinner()
+        elif whoWon.upper() == "B":
             self.wins_B += 1
+            self.sets_played.append(set)
+            self.checkWinner()
         else:
             print("ERROR WRONG TEAM INPUTTED")
     
-    def checkWinner(self):
-        if self.wins_A == (self.max_sets//2 + 1):
-            self.winner == "A"
-        elif self.wins_B == (self.max_sets//2 + 1):
-            self.winner == "B"
+    def printSets(self):
+        print(f"A | {self.wins_A} : {self.wins_B} | B")
+        
 
-class Set():
+class VolleyballSet():
     points_A = 0
     points_B = 0
 
@@ -50,16 +60,7 @@ class Set():
 
         self.server_team = server_team
     
-    def updateScore(self, whoWon:str):
-        if whoWon == "A":
-            self.points_A += 1
-        elif whoWon == "B":
-            self.points_B += 1
-        else:
-            print("ERROR WRONG TEAM INPUTTED")
-
     def checkWinner(self):
-        
         if self.points_A == self.max_points:
             if self.points_B == (self.points_A - 1): #check for a deuce
                 self.max_points += 1
@@ -70,6 +71,19 @@ class Set():
                 self.max_points += 1
             else:
                 self.won = "B"
+
+    def updateScore(self, whoWon:str): #try - except change
+        if whoWon.upper() == "A":
+            self.points_A += 1
+            self.checkWinner()
+        elif whoWon.upper() == "B":
+            self.points_B += 1
+            self.checkWinner()
+        else:
+            print("ERROR WRONG TEAM INPUTTED")
+    
+    def printScore(self):
+        print(f"A | {self.points_A} : {self.points_B} | B")
 
 class Point():
     def __init__(self, winner:str, type_point:int = 0):
