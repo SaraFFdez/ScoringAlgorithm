@@ -49,7 +49,6 @@ class VolleyballSet():
     end_time = 0 #change later
     duration = 0 #change later
 
-    server_number = 0
     won = None
 
     def __init__(self, max_points:int, rotation_A:list , rotation_B:list, server_team:str):
@@ -84,6 +83,23 @@ class VolleyballSet():
     
     def printScore(self):
         print(f"A | {self.points_A} : {self.points_B} | B")
+    
+    def currentServer(self):
+        if self.server_team == "A":
+            print("The current server for team " + self.server_team + " is player number " + self.rotation_A[0])
+        elif self.server_team == "B":
+            print("The current server for team " + self.server_team + " is player number " + self.rotation_B[0])
+
+    def updateServer(self, whoWon):
+        if self.server_team != whoWon:
+            if self.server_team == "A":
+                self.server_team = "B"
+                self.rotation_B = self.rotation_B[1:] + self.rotation_B[:1]
+            elif self.server_team == "B":
+                self.server_team = "A"
+                self.rotation_A = self.rotation_A[1:] + self.rotation_A[:1]
+            else:
+                print("Something went wrong")
 
 class Point():
     def __init__(self, winner:str, type_point:int = 0):
